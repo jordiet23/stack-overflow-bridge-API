@@ -1,0 +1,27 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+/dev_deployment
+Makefile
+docker-compose.yml
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> infection/infection ###
+per-mutator.md
+summary.log
+###< infection/infection ###
+
+###> PhpStorm related config ###
+.idea
+###< PhpStorm related config ###
