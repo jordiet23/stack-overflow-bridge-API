@@ -2,9 +2,9 @@
 
 namespace App\Api\Question;
 
-use App\Api\Shared\AbstractApiRequestHandler;
 use App\Application\Question\DTO\QuestionsPaginationParams;
 use App\Application\Question\QuestionInfoProviderInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 
 #[Route('/questions', name: 'api.questions', methods: ['GET'])]
-class PaginateQuestionsRequestHandler extends AbstractApiRequestHandler
+class PaginateQuestionsRequestHandler extends AbstractController
 {
 
     public function __construct(
