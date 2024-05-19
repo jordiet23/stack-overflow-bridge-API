@@ -34,3 +34,19 @@ Para utilizar la **stack-overflow-bridge-API**, es necesario configurar dos vari
 
 - `STACK_EXCHANGE_URL`: La URL base de la API de Stack Exchange que se está integrando. Por defecto, se utiliza `https://api.stackexchange.com/2.3`.
 - `STACK_EXCHANGE_KEY`: La clave de acceso a la API de Stack Exchange. Esta clave es proporcionada por Stack Overflow al registrar una aplicación en Stack Apps. Es importante tener esta clave para evitar bloqueos por parte de Stack Exchange debido al límite de llamadas.
+
+## Uso
+
+1. Clone el proyecto desde el repositorio.
+
+
+2. Navegue hasta el directorio del proyecto.
+
+
+3. Ejecute el siguiente comando para configurar y levantar el proyecto:
+
+    ```bash
+    make deploy
+    ```
+
+4. Una vez que el proyecto se haya desplegado correctamente, puede acceder a él a través de su navegador web visitando [http://127.0.0.1:8080](http://127.0.0.1:8080).

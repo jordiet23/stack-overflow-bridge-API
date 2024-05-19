@@ -7,9 +7,6 @@
 /public/bundles/
 /var/
 /vendor/
-/dev_deployment
-Makefile
-docker-compose.yml
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

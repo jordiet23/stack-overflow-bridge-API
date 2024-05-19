@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+
+  nginx:
+    network_mode: bridge
+    links:
+      - 'php-fpm:php-fpm'
+    build:
+      context: .
+      dockerfile: dev_deployment/nginx/Dockerfile
+    ports:
+      - ${my_api:-8080}:80
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    network_mode: bridge
+    build:
+      context: .
+      dockerfile: dev_deployment/php-fpm/Dockerfile
+      target: dev
+      args:
+        DEV_USER_ID: ${user:-1000}
+    volumes:
+      - .:/var/www/html
+      - ./:/home/developer/app
+      - ./dev_deployment/php-fpm/php.ini-development:/usr/local/etc/php/php.ini
