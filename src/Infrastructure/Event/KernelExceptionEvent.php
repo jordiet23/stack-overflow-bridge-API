@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Event;
 
+use App\Api\Answer\AnswersByQuestionRequestHandler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpClient\Exception\ClientException;
@@ -75,6 +76,13 @@ class KernelExceptionEvent implements EventSubscriberInterface
             return [
                 $exception->getCode(),
                 $errorMessage,
+            ];
+        }
+
+        if ($exception instanceof \TypeError) {
+            return[
+                Response::HTTP_BAD_REQUEST,
+                'The provided argument is not of the correct type.'
             ];
         }
 
