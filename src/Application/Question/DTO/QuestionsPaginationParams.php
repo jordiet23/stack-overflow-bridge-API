@@ -13,7 +13,7 @@ class QuestionsPaginationParams
         public ?int $pagesize,
         #[Assert\Choice(choices: ["asc", "desc", null], message: "Invalid order value")]
         public ?string $order,
-        #[Assert\Choice(choices: ["activity", "votes", "creation", null], message: "Invalid sort value")]
+        #[Assert\Choice(choices: ["activity", "votes", "creation", "hot", "week", "month", null], message: "Invalid sort value")]
         public ?string $sort
     ) {
         $this->page = $page ?? 1;
