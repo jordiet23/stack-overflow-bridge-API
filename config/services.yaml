@@ -22,3 +22,16 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    Symfony\Contracts\HttpClient\HttpClientInterface $stackExchangeClient:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: [ Symfony\Component\HttpClient\HttpClient, create ]
+        arguments:
+            $defaultOptions:
+                verify_peer: false
+                verify_host: false
+                timeout: 90
+                base_uri: '%env(STACK_EXCHANGE_URL)%/'
+                headers:
+                    Accept: application/json
+                    Content-Type: application/json;charset=UTF-8
