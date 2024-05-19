@@ -7,11 +7,12 @@ use App\Application\Question\DTO\QuestionsPaginationParams;
 use App\Application\Question\QuestionInfoProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 
 #[Route('/questions', name: 'api.questions', methods: ['GET'])]
 class PaginateQuestionsRequestHandler extends AbstractApiRequestHandler
@@ -24,6 +25,9 @@ class PaginateQuestionsRequestHandler extends AbstractApiRequestHandler
     ) {
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     */
     public function __invoke(Request $request): JsonResponse
     {
 
@@ -37,7 +41,7 @@ class PaginateQuestionsRequestHandler extends AbstractApiRequestHandler
         $errors = $this->validator->validate($params);
 
         if (count($errors) > 0) {
-            return $this->jsonError($errors, Response::HTTP_BAD_REQUEST);
+            throw new ValidationFailedException($params, $errors);
         }
 
         $result = $this->questionInfoProvider->paginate($params);

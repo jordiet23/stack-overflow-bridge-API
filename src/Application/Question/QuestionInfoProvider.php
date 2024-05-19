@@ -9,6 +9,7 @@ use App\Domain\Question;
 use App\Domain\QuestionRepositoryInterface;
 use App\Infrastructure\Client\Question\DTO\QuestionDTO;
 use App\Infrastructure\Client\Question\DTO\QuestionsPaginateResponseDTO;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 
 class QuestionInfoProvider implements QuestionInfoProviderInterface
 {
@@ -18,6 +19,9 @@ class QuestionInfoProvider implements QuestionInfoProviderInterface
     {
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     */
     public function paginate(QuestionsPaginationParams $params): PaginationResult
     {
         return $this->parseResult($this->questionsClient->paginate($params), $params->pagesize, $params->page);

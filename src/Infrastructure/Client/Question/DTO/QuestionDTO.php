@@ -8,7 +8,7 @@ class QuestionDTO
 {
     public function __construct(
         public array $tags,
-        public OwnerDTO $owner,
+        public ?OwnerDTO $owner,
         #[SerializedName('is_answered')] public bool $isAnswered,
         #[SerializedName('view_count')] public int $viewCount,
         #[SerializedName('accepted_answer_id')] public ?int $acceptedAnswerId,

@@ -7,6 +7,7 @@ use App\Domain\AnswerRepositoryInterface;
 use App\Domain\Owner;
 use App\Infrastructure\Client\Answer\DTO\AnswerByQuestionResponseDTO;
 use App\Infrastructure\Client\Answer\DTO\AnswerDTO;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 
 class AnswerInfoProvider implements AnswerInfoProviderInterface
 {
@@ -16,6 +17,9 @@ class AnswerInfoProvider implements AnswerInfoProviderInterface
     {
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     */
     public function getAnswersByQuestionId(int $questionId): array
     {
         return $this->parseResult($this->answerRepository->getAnswersByQuestionId($questionId));

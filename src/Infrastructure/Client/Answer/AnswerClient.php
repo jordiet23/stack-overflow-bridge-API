@@ -19,6 +19,9 @@ class AnswerClient implements AnswerRepositoryInterface
     {
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     */
     public function getAnswersByQuestionId(int $questionId): AnswerByQuestionResponseDTO
     {
         try {
@@ -29,7 +32,7 @@ class AnswerClient implements AnswerRepositoryInterface
 
             return $this->deserializeResponse($content);
         } catch (ClientExceptionInterface $e) {
-            throw new \RuntimeException('Client error: ' . $e->getMessage());
+            throw $e;
         } catch (\Throwable $e) {
             throw new \RuntimeException('An error occurred: ' . $e->getMessage());
         }

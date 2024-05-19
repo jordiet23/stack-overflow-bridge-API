@@ -20,6 +20,9 @@ class QuestionClient implements QuestionRepositoryInterface
     {
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     */
     public function paginate(QuestionsPaginationParams $params): QuestionsPaginateResponseDTO
     {
         try {
@@ -32,7 +35,7 @@ class QuestionClient implements QuestionRepositoryInterface
 
             return $this->deserializeResponse($content);
         } catch (ClientExceptionInterface $e) {
-            throw new \RuntimeException('Client error: ' . $e->getMessage());
+            throw $e;
         } catch (\Throwable $e) {
             throw new \RuntimeException('An error occurred: ' . $e->getMessage());
         }
