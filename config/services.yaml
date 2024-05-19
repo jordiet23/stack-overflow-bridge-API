@@ -35,3 +35,6 @@ services:
                 headers:
                     Accept: application/json
                     Content-Type: application/json;charset=UTF-8
+                query:
+                    site: 'stackoverflow'
+                    key: '%env(STACK_EXCHANGE_KEY)%'
