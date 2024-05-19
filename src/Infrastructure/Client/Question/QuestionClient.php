@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Infrastructure\Client;
+namespace App\Infrastructure\Client\Question;
 
 use App\Application\Question\DTO\QuestionsPaginationParams;
 use App\Domain\QuestionRepositoryInterface;
-use App\Infrastructure\Client\DTO\ItemDTO;
-use App\Infrastructure\Client\DTO\ResponseDTO;
+use App\Infrastructure\Client\Question\DTO\QuestionDTO;
+use App\Infrastructure\Client\Question\DTO\QuestionsPaginateResponseDTO;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class StackExchangeClient implements QuestionRepositoryInterface
+class QuestionClient implements QuestionRepositoryInterface
 {
 
     public function __construct(
@@ -20,21 +20,17 @@ class StackExchangeClient implements QuestionRepositoryInterface
     {
     }
 
-    public function paginate(QuestionsPaginationParams $params): ResponseDTO
+    public function paginate(QuestionsPaginationParams $params): QuestionsPaginateResponseDTO
     {
         try {
             $queryParams = http_build_query($params);
 
             $content = $this->stackExchangeClient->request(
                 method: 'GET',
-                url: "questions?{$queryParams}&site=stackoverflow",
+                url: "questions?{$queryParams}",
             )->getContent();
 
-            $responseDto = $this->deserializeResponseDTO($content);
-
-            $responseDto->items = $this->deserializeItems($responseDto->items);
-
-            return $responseDto;
+            return $this->deserializeResponse($content);
         } catch (ClientExceptionInterface $e) {
             throw new \RuntimeException('Client error: ' . $e->getMessage());
         } catch (\Throwable $e) {
@@ -42,13 +38,11 @@ class StackExchangeClient implements QuestionRepositoryInterface
         }
     }
 
-    private function deserializeResponseDTO(string $content): ResponseDTO
+    private function deserializeResponse(string $content): QuestionsPaginateResponseDTO
     {
-        return $this->serializer->deserialize($content, ResponseDTO::class, 'json');
-    }
+        $responseDto = $this->serializer->deserialize($content, QuestionsPaginateResponseDTO::class, 'json');
+        $responseDto->items = $this->serializer->denormalize($responseDto->items, QuestionDTO::class . '[]');
 
-    private function deserializeItems(array $items): array
-    {
-        return $this->serializer->denormalize($items, ItemDTO::class . '[]');
+        return $responseDto;
     }
 }

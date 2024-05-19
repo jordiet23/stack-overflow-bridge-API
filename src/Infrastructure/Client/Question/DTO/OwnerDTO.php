@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Client\DTO;
+namespace App\Infrastructure\Client\Question\DTO;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 

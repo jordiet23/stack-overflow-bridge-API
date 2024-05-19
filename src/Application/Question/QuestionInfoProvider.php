@@ -7,8 +7,8 @@ use App\Application\Question\DTO\QuestionsPaginationParams;
 use App\Domain\Owner;
 use App\Domain\Question;
 use App\Domain\QuestionRepositoryInterface;
-use App\Infrastructure\Client\DTO\ItemDTO;
-use App\Infrastructure\Client\DTO\ResponseDTO;
+use App\Infrastructure\Client\Question\DTO\QuestionDTO;
+use App\Infrastructure\Client\Question\DTO\QuestionsPaginateResponseDTO;
 
 class QuestionInfoProvider implements QuestionInfoProviderInterface
 {
@@ -23,12 +23,12 @@ class QuestionInfoProvider implements QuestionInfoProviderInterface
         return $this->parseResult($this->questionsClient->paginate($params), $params->pagesize, $params->page);
     }
 
-    private function parseResult(ResponseDTO $responseDTO, int $perPage, int $page): PaginationResult
+    private function parseResult(QuestionsPaginateResponseDTO $responseDTO, int $perPage, int $page): PaginationResult
     {
         return new PaginationResult(
             page: $page,
-            perPage: $perPage,
-            items: array_map(function (ItemDTO $item) {
+            pagesize: $perPage,
+            items: array_map(function (QuestionDTO $item) {
                 return new Question(
                     id: $item->questionId,
                     title: $item->title,
@@ -36,6 +36,7 @@ class QuestionInfoProvider implements QuestionInfoProviderInterface
                     viewCount: $item->viewCount,
                     answerCount: $item->answerCount,
                     score: $item->score,
+                    link: $item->link,
                     creationDate: new \DateTime('@' . $item->creationDate)
                 );
             }, $responseDTO->items)

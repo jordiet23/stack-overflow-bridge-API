@@ -12,7 +12,7 @@ class PaginationResult
      */
     public function __construct(
         public int $page,
-        public int $perPage,
+        public int $pagesize,
         public array $items
     ) {}
 }

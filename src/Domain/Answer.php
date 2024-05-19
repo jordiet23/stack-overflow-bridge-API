@@ -2,16 +2,13 @@
 
 namespace App\Domain;
 
-class Question
+class Answer
 {
     public function __construct(
         public int $id,
-        public string $title,
+        public int $questionId,
         public Owner $owner,
-        public int $viewCount,
-        public int $answerCount,
-        public int $score,
-        public string $link,
+        public bool $isAccepted,
         public \DateTime $creationDate
     ) {}
 }

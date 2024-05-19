@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Client\DTO;
+namespace App\Infrastructure\Client\Answer\DTO;
 
+use App\Infrastructure\Client\Question\DTO\QuestionDTO;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-class ResponseDTO
+class AnswerByQuestionResponseDTO
 {
     public function __construct(
         public array $items,
@@ -13,7 +14,7 @@ class ResponseDTO
         #[SerializedName('quota_remaining')] public int $quotaRemaining
     ) {}
 
-    public function getItem(int $index = 0): ?ItemDTO
+    public function getItem(int $index = 0): ?QuestionDTO
     {
         return $this->items[$index] ?? null;
     }
