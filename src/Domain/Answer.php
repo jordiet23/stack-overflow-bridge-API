@@ -5,10 +5,11 @@ namespace App\Domain;
 class Answer
 {
     public function __construct(
-        public int $id,
-        public int $questionId,
-        public Owner $owner,
-        public bool $isAccepted,
-        public \DateTime $creationDate
+        public readonly int $id,
+        public readonly int $questionId,
+        public readonly Owner $owner,
+        public readonly bool $isAccepted,
+        public readonly \DateTime $creationDate,
+        public readonly ?string $body
     ) {}
 }

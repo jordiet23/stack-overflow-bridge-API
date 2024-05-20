@@ -38,4 +38,4 @@ services:
                 query:
                     site: 'stackoverflow'
                     key: '%env(STACK_EXCHANGE_KEY)%'
-                    filter: '!6WPIomnMOOD*e'
+                    filter: '!6WPIomnMOOD*e' #Filter to add body to questions and responses

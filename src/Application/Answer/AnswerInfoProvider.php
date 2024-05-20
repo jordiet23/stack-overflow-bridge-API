@@ -33,7 +33,8 @@ class AnswerInfoProvider implements AnswerInfoProviderInterface
                     questionId: $item->questionId,
                     owner: new Owner(id: $item->owner->userId, displayName: $item->owner->displayName, profileLink: $item->owner->profileImage),
                     isAccepted: $item->isAccepted,
-                    creationDate: new \DateTime('@' . $item->creationDate)
+                    creationDate: new \DateTime('@' . $item->creationDate),
+                    body: $item->body
                 );
             }, $responseDTO->items);
     }

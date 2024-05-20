@@ -20,6 +20,7 @@ class QuestionDTO
         #[SerializedName('question_id')] public int $questionId,
         #[SerializedName('content_license')] public ?string $contentLicense,
         public string $link,
-        public string $title
+        public string $title,
+        public ?string $body
     ) {}
 }

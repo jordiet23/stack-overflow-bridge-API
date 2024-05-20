@@ -5,8 +5,8 @@ namespace App\Domain;
 class Owner
 {
     public function __construct(
-        public ?int $id,
-        public ?string $displayName,
-        public ?string $profileLink
+        public readonly ?int $id,
+        public readonly ?string $displayName,
+        public readonly ?string $profileLink
     ) {}
 }

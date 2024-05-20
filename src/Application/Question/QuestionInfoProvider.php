@@ -41,7 +41,8 @@ class QuestionInfoProvider implements QuestionInfoProviderInterface
                     answerCount: $item->answerCount,
                     score: $item->score,
                     link: $item->link,
-                    creationDate: new \DateTime('@' . $item->creationDate)
+                    creationDate: new \DateTime('@' . $item->creationDate),
+                    body: $item->body
                 );
             }, $responseDTO->items)
         );

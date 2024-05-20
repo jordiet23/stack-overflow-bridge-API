@@ -16,5 +16,6 @@ class AnswerDTO
         #[SerializedName('answer_id')] public int $answerId,
         #[SerializedName('question_id')] public int $questionId,
         #[SerializedName('content_license')] public ?string $contentLicense,
+        public ?string $body,
     ) {}
 }
