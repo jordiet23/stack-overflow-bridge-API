@@ -32,7 +32,7 @@ The project implements two main endpoints as examples:
 To use the **stack-overflow-bridge-API**, you need to configure two environment variables:
 
 - `STACK_EXCHANGE_URL`: The base URL of the Stack Exchange API being integrated. By default, it is set to `https://api.stackexchange.com/2.3`.
-- `STACK_EXCHANGE_KEY`: The access key for the Stack Exchange API. This key is provided by Stack Apps when registering an application on Stack Apps. It is important to have this key to avoid rate limiting by Stack Exchange.
+- `STACK_EXCHANGE_KEY`: The access key for the Stack Exchange API. This key is provided by Stack Overflow when registering an application on Stack Apps. It is important to have this key to avoid rate limiting by Stack Exchange.
 
 ## Usage
 
@@ -55,7 +55,7 @@ Our project includes comprehensive tests to ensure the quality and reliability o
 ### Types of Tests
 
 - **Unit Tests**: These are located in the `tests/Application` and `tests/Infrastructure` directories. They cover the core logic and functionalities of our application and infrastructure layers.
-- **Web Tests**: These are located in the `tests/Controller` directory. They utilize Symfony's `WebTestCase` to test the behavior and responses of our controllers in a simulated HTTP environment.
+- **Web Tests**: These are located in the `tests/Api` directory. They utilize Symfony's `WebTestCase` to test the behavior and responses of our controllers in a simulated HTTP environment.
 
 ### Running Tests
 
