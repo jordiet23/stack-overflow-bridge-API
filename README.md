@@ -48,6 +48,30 @@ To use the **stack-overflow-bridge-API**, you need to configure two environment 
 
 4. Once the project is successfully deployed, you can access it via your web browser by visiting [http://127.0.0.1:8080](http://127.0.0.1:8080).
 
+## Testing
+
+Our project includes comprehensive tests to ensure the quality and reliability of the application. We have implemented unit tests for both the Application and Infrastructure layers, as well as WebTestCase tests for our controllers.
+
+### Types of Tests
+
+- **Unit Tests**: These are located in the `tests/Application` and `tests/Infrastructure` directories. They cover the core logic and functionalities of our application and infrastructure layers.
+- **Web Tests**: These are located in the `tests/Controller` directory. They utilize Symfony's `WebTestCase` to test the behavior and responses of our controllers in a simulated HTTP environment.
+
+### Running Tests
+
+To execute the tests, follow these steps:
+
+1. **Deploy the application**: Ensure all services are up and running.
+    ```bash
+    make deploy
+    ```
+2. **Run the tests**: This will execute all the tests in the project.
+    ```bash
+    make test
+    ```
+By following these commands, you can verify that all aspects of the application are functioning as expected.
+
+
 ## Application Architecture
 
 The application architecture follows the principles of clean architecture, also known as hexagonal architecture, combined with the ports and adapters pattern. This architectural approach promotes modularity, separation of concerns, and ease of maintenance.

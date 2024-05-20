@@ -12,3 +12,6 @@ stop:
 
 destroy: stop
 	@docker compose down --rmi all
+
+test:
+	@docker compose exec php-fpm bin/phpunit
