@@ -36,7 +36,7 @@ class QuestionInfoProvider implements QuestionInfoProviderInterface
                 return new Question(
                     id: $item->questionId,
                     title: $item->title,
-                    owner: new Owner(id: $item->owner->userId, displayName: $item->owner->displayName, profileLink: $item->owner->profileImage),
+                    owner: new Owner(id: $item->owner->userId, displayName: $item->owner->displayName, profileLink: $item->owner->link),
                     viewCount: $item->viewCount,
                     answerCount: $item->answerCount,
                     score: $item->score,
