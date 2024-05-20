@@ -36,6 +36,6 @@ class AnswerInfoProvider implements AnswerInfoProviderInterface
                     creationDate: new \DateTime('@' . $item->creationDate),
                     body: $item->body
                 );
-            }, $responseDTO->getItems());
+            }, $responseDTO->items);
     }
 }

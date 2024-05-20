@@ -44,7 +44,7 @@ class QuestionInfoProvider implements QuestionInfoProviderInterface
                     creationDate: new \DateTime('@' . $item->creationDate),
                     body: $item->body
                 );
-            }, $responseDTO->getItems())
+            }, $responseDTO->items)
         );
     }
 }

@@ -2,55 +2,12 @@
 
 namespace App\Infrastructure\Client\Question\DTO;
 
-use Symfony\Component\Serializer\Attribute\SerializedName;
-
 class QuestionsPaginateResponseDTO
 {
     public function __construct(
-        private array $items,
-        #[SerializedName('has_more')] private bool $hasMore,
-        #[SerializedName('quota_max')] private int $quotaMax,
-        #[SerializedName('quota_remaining')] private int $quotaRemaining
+        public readonly array $items,
+        public readonly bool $hasMore,
+        public readonly int $quotaMax,
+        public readonly int $quotaRemaining
     ) {}
-
-    public function getItems(): array
-    {
-        return $this->items;
-    }
-
-    public function setItems(array $items): void
-    {
-        $this->items = $items;
-    }
-
-    public function isHasMore(): bool
-    {
-        return $this->hasMore;
-    }
-
-    public function setHasMore(bool $hasMore): void
-    {
-        $this->hasMore = $hasMore;
-    }
-
-    public function getQuotaMax(): int
-    {
-        return $this->quotaMax;
-    }
-
-    public function setQuotaMax(int $quotaMax): void
-    {
-        $this->quotaMax = $quotaMax;
-    }
-
-    public function getQuotaRemaining(): int
-    {
-        return $this->quotaRemaining;
-    }
-
-    public function setQuotaRemaining(int $quotaRemaining): void
-    {
-        $this->quotaRemaining = $quotaRemaining;
-    }
-
 }

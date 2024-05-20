@@ -7,7 +7,6 @@ use App\Domain\QuestionRepositoryInterface;
 use App\Infrastructure\Client\Question\DTO\OwnerDTO;
 use App\Infrastructure\Client\Question\DTO\QuestionDTO;
 use App\Infrastructure\Client\Question\DTO\QuestionsPaginateResponseDTO;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -15,8 +14,7 @@ class QuestionClient implements QuestionRepositoryInterface
 {
 
     public function __construct(
-        private readonly HttpClientInterface $stackExchangeClient,
-        private readonly SerializerInterface $serializer
+        private readonly HttpClientInterface $stackExchangeClient
     )
     {
     }
@@ -34,7 +32,7 @@ class QuestionClient implements QuestionRepositoryInterface
                 url: "questions?{$queryParams}",
             )->getContent();
 
-            return $this->deserializeResponse($content);
+            return $this->mapResponse($content);
         } catch (ClientExceptionInterface $e) {
             throw $e;
         } catch (\Throwable $e) {
@@ -42,20 +40,25 @@ class QuestionClient implements QuestionRepositoryInterface
         }
     }
 
-    private function deserializeResponse(string $content): QuestionsPaginateResponseDTO
+    private function mapResponse(string $content): QuestionsPaginateResponseDTO
     {
-        $responseDto = $this->serializer->deserialize($content, QuestionsPaginateResponseDTO::class, 'json');
-        $responseDto->setItems(array_map([$this, 'mapToQuestionDTO'], $responseDto->getItems()));
+        $contentArray = json_decode($content, true);
+        $questions = isset($contentArray['items']) ? array_map([$this, 'mapQuestionDTO'], $contentArray['items']) : [];
 
-        return $responseDto;
+        return new QuestionsPaginateResponseDTO(
+            items: $questions,
+            hasMore: $contentArray['has_more'],
+            quotaMax: $contentArray['quota_max'],
+            quotaRemaining: $contentArray['quota_remaining']
+        );
     }
 
-    private function mapToQuestionDTO(array $item): QuestionDTO
+    private function mapQuestionDTO(array $item): QuestionDTO
     {
         $ownerDTO = isset($item['owner']) ? new OwnerDTO(
             accountId: $item['owner']['account_id'] ?? null,
             reputation: $item['owner']['reputation'] ?? null,
-            userId: isset($item['owner']['user_id']) ? : null,
+            userId: $item['owner']['user_id'] ?? null,
             userType: $item['owner']['user_type'] ?? null,
             profileImage: $item['owner']['profile_image'] ?? null,
             displayName: $item['owner']['display_name'] ?? null,
