@@ -15,6 +15,34 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use OpenApi\Attributes as OA;
 
+#[OA\Get(
+    path: "/questions",
+    summary: "Paginate questions",
+    parameters: [
+        new OA\Parameter(name: "page", description: "Page number", in: "query", required: false, schema: new OA\Schema(type: "integer", minimum: 1)),
+        new OA\Parameter(name: "pagesize", description: "Number of items per page", in: "query", required: false, schema: new OA\Schema(type: "integer", maximum: 100, minimum: 1)),
+        new OA\Parameter(name: "order", description: "Order either ascending or descending", in: "query", required: false, schema: new OA\Schema(type: "string", enum:["asc","desc"])),
+        new OA\Parameter(name: "sort", description: "Sort by", in: "query", required: false, schema: new OA\Schema(type: "string", enum:["activity","votes","creation","hot","week","month"]))
+    ],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Successful response',
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(ref: '#/components/schemas/PaginatedQuestionsResponse')
+            )
+        ),
+        new OA\Response(
+            response: 400,
+            description: "Validation error",
+            content: new OA\JsonContent(
+                ref: '#/components/schemas/PaginatedQuestionsErrorResponse',
+                type: 'object'
+            )
+        ),
+    ]
+)]
 #[Route('/questions', name: 'api.questions', methods: ['GET'])]
 class PaginateQuestionsRequestHandler extends AbstractController
 {
@@ -30,31 +58,6 @@ class PaginateQuestionsRequestHandler extends AbstractController
     /**
      * @throws ClientExceptionInterface
      */
-    #[OA\Get(
-        path: "/questions",
-        summary: "Paginate questions",
-        parameters: [
-            new OA\Parameter(name: "pagination params", description: "Pagination parameters", in: "query", required: false, schema: new OA\Schema(ref:"#/components/schemas/PaginatedQuestionsRequest"))
-        ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Successful response',
-                content: new OA\JsonContent(
-                    type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/PaginatedQuestionsResponse')
-                )
-            ),
-            new OA\Response(
-                response: 400,
-                description: "Validation error",
-                content: new OA\JsonContent(
-                    ref: '#/components/schemas/PaginatedQuestionsErrorResponse',
-                    type: 'object'
-                )
-            ),
-        ]
-    )]
     public function __invoke(Request $request): JsonResponse
     {
 
