@@ -8,17 +8,37 @@ class QuestionsPaginationParams
 {
     public function __construct(
         #[Assert\Range(minMessage: 'page must be greater than 0', min: 1)]
-        public ?int $page,
+        private ?int $page,
         #[Assert\Range(maxMessage: 'length must be fewer than 100', max: 100)]
-        public ?int $pagesize,
+        private ?int $pagesize,
         #[Assert\Choice(choices: ["asc", "desc", null], message: "Invalid order value")]
-        public ?string $order,
+        private ?string $order,
         #[Assert\Choice(choices: ["activity", "votes", "creation", "hot", "week", "month", null], message: "Invalid sort value")]
-        public ?string $sort
+        private ?string $sort
     ) {
         $this->page = $page ?? 1;
         $this->pagesize = $pagesize ?? 10;
         $this->order = $order ?? "desc";
         $this->sort = $sort ?? "activity";
+    }
+
+    public function getPage(): ?int
+    {
+        return $this->page;
+    }
+
+    public function getPagesize(): ?int
+    {
+        return $this->pagesize;
+    }
+
+    public function getOrder(): ?string
+    {
+        return $this->order;
+    }
+
+    public function getSort(): ?string
+    {
+        return $this->sort;
     }
 }

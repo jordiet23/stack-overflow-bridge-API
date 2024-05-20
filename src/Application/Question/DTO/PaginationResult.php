@@ -11,8 +11,8 @@ class PaginationResult
      * @param T[] $items
      */
     public function __construct(
-        public int $page,
-        public int $pagesize,
-        public array $items
+        public readonly int $page,
+        public readonly int $pagesize,
+        public readonly array $items
     ) {}
 }

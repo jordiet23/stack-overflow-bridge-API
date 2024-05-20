@@ -24,7 +24,7 @@ class QuestionInfoProvider implements QuestionInfoProviderInterface
      */
     public function paginate(QuestionsPaginationParams $params): PaginationResult
     {
-        return $this->parseResult($this->questionsClient->paginate($params), $params->pagesize, $params->page);
+        return $this->parseResult($this->questionsClient->paginate($params), $params->getPagesize(), $params->getPage());
     }
 
     private function parseResult(QuestionsPaginateResponseDTO $responseDTO, int $perPage, int $page): PaginationResult
@@ -44,7 +44,7 @@ class QuestionInfoProvider implements QuestionInfoProviderInterface
                     creationDate: new \DateTime('@' . $item->creationDate),
                     body: $item->body
                 );
-            }, $responseDTO->items)
+            }, $responseDTO->getItems())
         );
     }
 }

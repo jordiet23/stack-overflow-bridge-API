@@ -44,7 +44,7 @@ class QuestionClient implements QuestionRepositoryInterface
     private function deserializeResponse(string $content): QuestionsPaginateResponseDTO
     {
         $responseDto = $this->serializer->deserialize($content, QuestionsPaginateResponseDTO::class, 'json');
-        $responseDto->items = $this->serializer->denormalize($responseDto->items, QuestionDTO::class . '[]');
+        $responseDto->setItems($this->serializer->denormalize($responseDto->getItems(), QuestionDTO::class . '[]'));
 
         return $responseDto;
     }

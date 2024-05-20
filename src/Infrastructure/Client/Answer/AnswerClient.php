@@ -41,7 +41,7 @@ class AnswerClient implements AnswerRepositoryInterface
     private function deserializeResponse(string $content): AnswerByQuestionResponseDTO
     {
         $responseDto = $this->serializer->deserialize($content, AnswerByQuestionResponseDTO::class, 'json');
-        $responseDto->items = $this->serializer->denormalize($responseDto->items, AnswerDTO::class . '[]');
+        $responseDto->setItems($this->serializer->denormalize($responseDto->getItems(), AnswerDTO::class . '[]'));
 
         return $responseDto;
     }

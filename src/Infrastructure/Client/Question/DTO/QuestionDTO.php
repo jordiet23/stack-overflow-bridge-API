@@ -7,20 +7,20 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 class QuestionDTO
 {
     public function __construct(
-        public array $tags,
-        public ?OwnerDTO $owner,
-        #[SerializedName('is_answered')] public bool $isAnswered,
-        #[SerializedName('view_count')] public int $viewCount,
-        #[SerializedName('accepted_answer_id')] public ?int $acceptedAnswerId,
-        #[SerializedName('answer_count')] public int $answerCount,
-        public int $score,
-        #[SerializedName('last_activity_date')] public int $lastActivityDate,
-        #[SerializedName('creation_date')] public int $creationDate,
-        #[SerializedName('last_edit_date')] public ?int $lastEditDate,
-        #[SerializedName('question_id')] public int $questionId,
-        #[SerializedName('content_license')] public ?string $contentLicense,
-        public string $link,
-        public string $title,
-        public ?string $body
+        public readonly array $tags,
+        public readonly ?OwnerDTO $owner,
+        #[SerializedName('is_answered')] public readonly bool $isAnswered,
+        #[SerializedName('view_count')] public readonly int $viewCount,
+        #[SerializedName('accepted_answer_id')] public readonly ?int $acceptedAnswerId,
+        #[SerializedName('answer_count')] public readonly int $answerCount,
+        public readonly int $score,
+        #[SerializedName('last_activity_date')] public readonly int $lastActivityDate,
+        #[SerializedName('creation_date')] public readonly int $creationDate,
+        #[SerializedName('last_edit_date')] public readonly ?int $lastEditDate,
+        #[SerializedName('question_id')] public readonly int $questionId,
+        #[SerializedName('content_license')] public readonly ?string $contentLicense,
+        public readonly string $link,
+        public readonly string $title,
+        public readonly ?string $body
     ) {}
 }
