@@ -1,117 +1,105 @@
 # stack-overflow-bridge-API
 
-La **stack-overflow-bridge-API** es una API que consume datos públicos de Stack Overflow a través de una integración con la [API oficial de Stack Exchange](https://api.stackexchange.com/). Esta API permite acceder a información relevante sobre preguntas y respuestas en Stack Overflow de manera programática.
+The **stack-overflow-bridge-API** is an API that consumes public data from Stack Overflow through an integration with the [official Stack Exchange API](https://api.stackexchange.com/). This API allows programmatic access to relevant information about questions and answers on Stack Overflow.
 
+## Features
 
-## Funcionalidades
+The project implements two main endpoints as examples:
 
-El proyecto implementa dos endpoints principales como ejemplo:
-
-1. **Listar Preguntas**: Este endpoint permite listar preguntas de Stack Overflow, con la posibilidad de ordenarlas y paginarlas según los parámetros especificados.
+1. **List Questions**: This endpoint allows you to list questions from Stack Overflow, with the ability to sort and paginate them according to specified parameters.
 
    **Endpoint:** `/questions`
 
-   **Método HTTP:** GET
+   **HTTP Method:** GET
 
-   **Parámetros:**
-   - `page`: Número de página para la paginación (mínimo 1, por defecto 1).
-   - `pageSize`: Tamaño de la página para la paginación (máximo 100, por defecto 10).
-   - `order`: Orden de las preguntas (puede ser "asc" o "desc", por defecto "desc").
-   - `sort`: Parámetro de ordenación de las preguntas (puede ser "activity", "votes", "creation", "hot", "week", "month", por defecto "activity").
+   **Parameters:**
+   - `page`: Page number for pagination (minimum 1, default 1).
+   - `pageSize`: Page size for pagination (maximum 100, default 10).
+   - `order`: Order of the questions (can be "asc" or "desc", default is "desc").
+   - `sort`: Sorting parameter for the questions (can be "activity", "votes", "creation", "hot", "week", "month", default is "activity").
 
-
-2. **Obtener Respuestas**: Este endpoint permite obtener las respuestas asociadas a una pregunta específica en Stack Overflow.
+2. **Get Answers**: This endpoint allows you to retrieve the answers associated with a specific question on Stack Overflow.
 
    **Endpoint:** `/questions/{id}/answers`
 
-   **Método HTTP:** GET
+   **HTTP Method:** GET
 
-   **Parámetros:**
-    - `id`: ID de la pregunta de Stack Overflow.
+   **Parameters:**
+   - `id`: ID of the Stack Overflow question.
 
+## Configuration
 
-## Configuración
+To use the **stack-overflow-bridge-API**, you need to configure two environment variables:
 
-Para utilizar la **stack-overflow-bridge-API**, es necesario configurar dos variables de entorno:
+- `STACK_EXCHANGE_URL`: The base URL of the Stack Exchange API being integrated. By default, it is set to `https://api.stackexchange.com/2.3`.
+- `STACK_EXCHANGE_KEY`: The access key for the Stack Exchange API. This key is provided by Stack Apps when registering an application on Stack Apps. It is important to have this key to avoid rate limiting by Stack Exchange.
 
-- `STACK_EXCHANGE_URL`: La URL base de la API de Stack Exchange que se está integrando. Por defecto, se utiliza `https://api.stackexchange.com/2.3`.
-- `STACK_EXCHANGE_KEY`: La clave de acceso a la API de Stack Exchange. Esta clave es proporcionada por Stack Overflow al registrar una aplicación en Stack Apps. Es importante tener esta clave para evitar bloqueos por parte de Stack Exchange debido al límite de llamadas.
+## Usage
 
+1. Clone the project from the repository.
 
-## Uso
+2. Navigate to the project directory.
 
-1. Clone el proyecto desde el repositorio.
-
-
-2. Navegue hasta el directorio del proyecto.
-
-
-3. Ejecute el siguiente comando para configurar y levantar el proyecto:
+3. Run the following command to set up and launch the project:
 
     ```bash
     make deploy
     ```
 
-4. Una vez que el proyecto se haya desplegado correctamente, puede acceder a él a través de su navegador web visitando [http://127.0.0.1:8080](http://127.0.0.1:8080).
+4. Once the project is successfully deployed, you can access it via your web browser by visiting [http://127.0.0.1:8080](http://127.0.0.1:8080).
 
+## Application Architecture
 
-## Arquitectura de la Aplicación
+The application architecture follows the principles of clean architecture, also known as hexagonal architecture, combined with the ports and adapters pattern. This architectural approach promotes modularity, separation of concerns, and ease of maintenance.
 
-La arquitectura de la aplicación intenta seguir los principios de una arquitectura limpia, también conocida como arquitectura hexagonal junto con el patrón de puertos y adaptadores. Este enfoque arquitectónico promueve la modularidad, la separación de preocupaciones y la facilidad de mantenimiento.
+### Folder Structure
 
-### Organización de Carpetas
+The application is organized into different folders, each with a specific responsibility:
 
-La aplicación está cuidadosamente organizada en diferentes carpetas, cada una con una responsabilidad específica:
+- **Api**: Contains the API endpoints that provide access to Stack Overflow resources.
 
-- **Api**: Contiene los endpoints de la API que proporcionan acceso a los recursos de Stack Overflow.
+- **Application**: Contains the use cases of the application, represented by the answer information provider (`AnswerInfoProvider`) and question information provider (`QuestionInfoProvider`).
 
-- **Application**: Aquí se encuentran los casos de uso de la aplicación, representados por los proveedores de información de respuestas (`AnswerInfoProvider`) y preguntas (`QuestionInfoProvider`).
+- **Domain**: Contains the domain classes such as `Answer`, `Owner`, and `Question`, and the repository interfaces (`AnswerRepositoryInterface` and `QuestionRepositoryInterface`) that define contracts for data persistence.
 
-- **Domain**: Contiene las clases de dominio, como `Answer`, `Owner` y `Question`, y las interfaces de los repositorios (`AnswerRepositoryInterface` y `QuestionRepositoryInterface`) que definen contratos para la persistencia de datos.
+- **Infrastructure/Client**: Contains the clients that integrate with Stack Exchange (`AnswerClient` and `QuestionClient`). These clients implement the repository interfaces (`AnswerRepositoryInterface` and `QuestionRepositoryInterface`) defined in the domain.
 
-- **Infrastructure/Client**: En esta carpeta se encuentran los clientes que se integran con Stack Exchange (`AnswerClient` y `QuestionClient`). Estos clientes implementan las interfaces de los repositorios (`AnswerRepositoryInterface` y `QuestionRepositoryInterface`) definidas en el dominio.
+- **Infrastructure/Event**: Contains the implementation of events such as `KernelExceptionEvent`, which captures exceptions and transforms them into appropriate JSON responses to improve error handling in the application.
 
-- **Infrastructure/Event**: Contiene la implementación de eventos, como `KernelExceptionEvent`, que captura excepciones y las transforma en respuestas JSON adecuadas para mejorar la gestión de errores en la aplicación.
+The folder structure provides a clear separation of responsibilities and facilitates code maintenance.
 
-La estructura de carpetas proporciona una clara separación de responsabilidades y facilita el mantenimiento del código.
+The architecture reflects the principles of ports and adapters by clearly separating the core application logic from implementation details. Ports represent the interfaces through which the application interacts with the external world, while adapters are responsible for connecting the ports with concrete implementation details.
 
-La arquitectura de puertos y adaptadores se refleja en la separación clara entre el núcleo de la aplicación y los detalles de implementación. Los puertos representan las interfaces a través de las cuales la aplicación interactúa con el mundo exterior, mientras que los adaptadores son responsables de conectar los puertos con los detalles de implementación concretos.
+## Documentation
 
+Swagger has been added to our API using the NelmioApiDocBundle library. This integration allows us to generate interactive API documentation where you can explore and test the different endpoints easily.
 
-## Documentación
-
-Hemos añadido Swagger a nuestra API utilizando la librería NelmioApiDocBundle. Esta integración nos permite generar una documentación interactiva de la API, donde se pueden explorar y probar los diferentes endpoints de manera sencilla.
-
-Puedes acceder a la documentación de la API generada por Swagger en la siguiente URL:
+You can access the API documentation generated by Swagger at the following URL:
 
 http://127.0.0.1:8080/api/doc
 
+NelmioApiDocBundle makes it easy to create detailed and clear documentation for our API, thus improving the understanding and usage of the API by developers. For more information about NelmioApiDocBundle, you can refer to the [official documentation](https://symfony.com/bundles/NelmioApiDocBundle/current/index.html).
 
-NelmioApiDocBundle facilita la creación de documentación detallada y clara para nuestra API, mejorando así la comprensión y uso de la misma por parte de los desarrolladores.
+## Next Steps
 
-Para más información sobre NelmioApiDocBundle, puedes consultar la [documentación oficial](https://symfony.com/bundles/NelmioApiDocBundle/current/index.html).
+The **stack-overflow-bridge-API** provides structured and programmatic access to Stack Overflow data. So far, we have implemented functionalities to paginate questions and retrieve the answers associated with those questions. Here are some possible next steps for further development of the API:
 
+### User Authentication
 
-## Siguientes Pasos
+Implement a user authentication system to allow users to access additional API functionalities, such as posting questions, answering questions, voting, commenting, and more.
 
-La **stack-overflow-bridge-API** proporciona acceso a datos de Stack Overflow de una manera estructurada y programática. Hasta el momento, hemos implementado funcionalidades para paginar preguntas y obtener las respuestas asociadas a estas preguntas. Aquí están algunos posibles siguientes pasos para continuar desarrollando la API:
+### Create, Edit, and Delete Posts
 
-### Autenticación de Usuarios
+Allow authenticated users to create new questions and answers, edit their existing posts, and delete them if necessary. This will provide full functionality to interact with Stack Overflow through the API.
 
-Implementa un sistema de autenticación para permitir que los usuarios accedan a funcionalidades adicionales de la API, como la capacidad de publicar preguntas, responder preguntas, votar, comentar, entre otros.
+### Comments and Voting
 
-### Crear, Editar y Eliminar Posts
+Implement the ability to comment on questions and answers, as well as vote for questions and answers. This will enable greater user interaction with the content.
 
-Permite a los usuarios autenticados crear nuevas preguntas y respuestas, editar sus propios posts existentes y eliminarlos si es necesario. Esto proporcionará una funcionalidad completa para interactuar con Stack Overflow a través de la API.
+### Advanced Search
 
-### Comentarios y Votación
+Introduce advanced search functionalities that allow users to search for questions by tags, publication date, number of votes, etc. This will enhance users' ability to find relevant content.
 
-Implementa la capacidad de comentar en preguntas y respuestas, así como la posibilidad de votar por preguntas y respuestas. Esto permitirá una mayor interacción de los usuarios con el contenido.
+### Statistics and Metrics
 
-### Búsqueda Avanzada
-
-Introduce funcionalidades de búsqueda avanzada que permitan a los usuarios buscar preguntas por etiquetas, fecha de publicación, número de votos, etc. Esto mejorará la capacidad de los usuarios para encontrar el contenido relevante.
-
-### Estadísticas y Métricas
-
-Implementa endpoints que proporcionen estadísticas sobre el uso de la API, métricas de popularidad de preguntas y respuestas, tendencias de etiquetas, etc. Esto ayudará a los desarrolladores a comprender mejor cómo se está utilizando la API.
+Implement endpoints that provide statistics on API usage, question and answer popularity metrics, tag trends, etc. This will help developers better understand how the API is being used.
