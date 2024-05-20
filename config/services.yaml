@@ -38,3 +38,4 @@ services:
                 query:
                     site: 'stackoverflow'
                     key: '%env(STACK_EXCHANGE_KEY)%'
+                    filter: '!6WPIomnMOOD*e'

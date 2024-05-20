@@ -1,0 +1,125 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: stack-overflow-bridge-API
+            description: The Stack Overflow Bridge API that consumes public data from Stack Overflow through an integration with the official Stack Exchange API
+            version: 1.0.0
+        components:
+            schemas:
+                Owner:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        displayName:
+                            type: string
+                        profileLink:
+                            type: string
+                Answer:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        questionId:
+                            type: integer
+                        owner:
+                            $ref: '#/components/schemas/Owner'  # Referencia al esquema de Owner
+                        isAccepted:
+                            type: boolean
+                        creationDate:
+                            type: object
+                            properties:
+                                date:
+                                    type: string
+                                    format: date-time
+                                timezone_type:
+                                    type: integer
+                                timezone:
+                                    type: string
+                        body:
+                            type: string
+                CreationDate:
+                    type: object
+                    properties:
+                        date:
+                            type: string
+                            format: date-time
+                        timezone_type:
+                            type: integer
+                        timezone:
+                            type: string
+                Question:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        title:
+                            type: string
+                        owner:
+                            $ref: '#/components/schemas/Owner'
+                        viewCount:
+                            type: integer
+                        answerCount:
+                            type: integer
+                        score:
+                            type: integer
+                        link:
+                            type: string
+                        creationDate:
+                            $ref: '#/components/schemas/CreationDate'
+                        body:
+                            type: string
+                PaginatedQuestionsRequest:
+                    type: object
+                    properties:
+                        page:
+                            type: integer
+                            description: Page number
+                            minimum: 1
+                        pagesize:
+                            type: integer
+                            description: Number of items per page
+                            minimum: 1
+                            maximum: 100
+                            default: 10
+                        order:
+                            type: string
+                            description: Order by activity or week
+                            enum:
+                                - asc
+                                - desc
+                        sort:
+                            type: string
+                            description: Sort order, either ascending or descending
+                            enum:
+                                - activity
+                                - votes
+                                - creation
+                                - hot
+                                - week
+                                - month
+                PaginatedQuestionsResponse:
+                    type: object
+                    properties:
+                        page:
+                            type: integer
+                        pagesize:
+                            type: integer
+                        items:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Question'
+                PaginatedQuestionsErrorResponse:
+                    type: object
+                    properties:
+                        error:
+                            type: object
+                            properties:
+                                code:
+                                    type: integer
+                                message:
+                                    type: string
+                                    default: "{\"errors\":[\"sort: Invalid sort value\"]}"
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/(?!_)

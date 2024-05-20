@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use OpenApi\Attributes as OA;
 
 #[Route('/questions', name: 'api.questions', methods: ['GET'])]
 class PaginateQuestionsRequestHandler extends AbstractController
@@ -22,12 +23,38 @@ class PaginateQuestionsRequestHandler extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
         private readonly QuestionInfoProviderInterface $questionInfoProvider
-    ) {
+    )
+    {
     }
 
     /**
      * @throws ClientExceptionInterface
      */
+    #[OA\Get(
+        path: "/questions",
+        summary: "Paginate questions",
+        parameters: [
+            new OA\Parameter(name: "pagination params", description: "Pagination parameters", in: "query", required: false, schema: new OA\Schema(ref:"#/components/schemas/PaginatedQuestionsRequest"))
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Successful response',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/PaginatedQuestionsResponse')
+                )
+            ),
+            new OA\Response(
+                response: 400,
+                description: "Validation error",
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/PaginatedQuestionsErrorResponse',
+                    type: 'object'
+                )
+            ),
+        ]
+    )]
     public function __invoke(Request $request): JsonResponse
     {
 
