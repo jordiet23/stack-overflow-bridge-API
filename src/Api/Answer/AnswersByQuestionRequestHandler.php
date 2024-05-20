@@ -11,7 +11,11 @@ use OpenApi\Attributes as OA;
 
 #[OA\Get(
     path: '/questions/{questionId}/answers',
+    description: "Retrieve all answers for a specific question by providing the question ID. 
+                  This endpoint returns a list of answers along with details about each answer, 
+                  including the answer's ID, the owner and its creation date.",
     summary: 'Get answers by question ID',
+    tags: ["Answers"],
     parameters: [
         new OA\Parameter(
             name: 'questionId',

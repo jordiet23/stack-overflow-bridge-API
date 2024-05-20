@@ -17,7 +17,11 @@ use OpenApi\Attributes as OA;
 
 #[OA\Get(
     path: "/questions",
+    description: "Retrieve a paginated list of questions from Stack Overflow. 
+                   This endpoint allows you to specify page number, page size, 
+                   sort order, and filter criteria to customize the list of questions returned.",
     summary: "Paginate questions",
+    tags:["Questions"],
     parameters: [
         new OA\Parameter(name: "page", description: "Page number", in: "query", required: false, schema: new OA\Schema(type: "integer", minimum: 1)),
         new OA\Parameter(name: "pagesize", description: "Number of items per page", in: "query", required: false, schema: new OA\Schema(type: "integer", maximum: 100, minimum: 1)),
