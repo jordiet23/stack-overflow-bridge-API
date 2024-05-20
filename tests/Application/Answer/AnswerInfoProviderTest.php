@@ -92,10 +92,10 @@ class AnswerInfoProviderTest extends TestCase
     public function testGetAnswersByQuestionIdFailed(): void
     {
         $this->answerRepositoryMock = $this->createMock(AnswerRepositoryInterface::class);
-        $response = $this->createMock(ClientExceptionInterface::class);
+        $exception = $this->createMock(ClientExceptionInterface::class);
         $this->answerRepositoryMock
             ->method('getAnswersByQuestionId')
-            ->willThrowException($response);
+            ->willThrowException($exception);
 
         $answerInfoProvider = new AnswerInfoProvider($this->answerRepositoryMock);
 
