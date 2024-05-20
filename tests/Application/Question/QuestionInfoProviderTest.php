@@ -21,6 +21,7 @@ class QuestionInfoProviderTest extends TestCase
     private QuestionRepositoryInterface $questionRepository;
     protected function setUp(): void
     {
+        parent::setUp();
         $this->questionRepository = $this->getMockBuilder(QuestionRepositoryInterface::class)
             ->getMock();
     }

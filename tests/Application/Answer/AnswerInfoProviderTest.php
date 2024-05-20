@@ -17,6 +17,7 @@ class AnswerInfoProviderTest extends TestCase
     private AnswerRepositoryInterface $answerRepositoryMock;
     protected function setUp(): void
     {
+        parent::setUp();
         $this->answerRepositoryMock = $this->getMockBuilder(AnswerRepositoryInterface::class)
             ->getMock();
     }

@@ -7,7 +7,6 @@ use App\Infrastructure\Client\Answer\DTO\AnswerByQuestionResponseDTO;
 use App\Infrastructure\Client\Answer\DTO\AnswerDTO;
 use App\Infrastructure\Client\Question\DTO\OwnerDTO;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -15,19 +14,25 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class AnswerClientTest extends TestCase
 {
+    private HttpClientInterface $httpClientMock;
+    private SerializerInterface $serializerMock;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->httpClientMock = $this->createMock(HttpClientInterface::class);
+        $this->serializerMock = $this->createMock(SerializerInterface::class);
+    }
 
     public function testGetAnswersByQuestionId(): void
     {
-        $httpClientMock = $this->createMock(HttpClientInterface::class);
-        $serializerMock = $this->createMock(SerializerInterface::class);
 
-        $answerClient = new AnswerClient($httpClientMock, $serializerMock);
+        $answerClient = new AnswerClient($this->httpClientMock, $this->serializerMock);
 
         $responseContent = '{"items":[{"owner":{"account_id":32175613,"reputation":1,"user_id":24972994,"user_type":"registered","display_name":"Jordi","link":"www.google.com"},"is_accepted":false,"score":0,"last_activity_date":1716203248,"creation_date":1716203248,"answer_id":78506247,"question_id":78465260,"content_license":"CC BY-SA 4.0","body":"Test Body"}],"has_more":false,"quota_max":10000,"quota_remaining":9766}';
 
         $responseMock = $this->createMock(ResponseInterface::class);
         $responseMock->method('getContent')->willReturn($responseContent);
-        $httpClientMock->expects($this->once())
+        $this->httpClientMock->expects($this->once())
             ->method('request')
             ->willReturn($responseMock);
 
@@ -58,7 +63,7 @@ class AnswerClientTest extends TestCase
             quotaRemaining: 280
         );
 
-        $serializerMock->expects($this->once())
+        $this->serializerMock->expects($this->once())
             ->method('deserialize')
             ->with($responseContent, AnswerByQuestionResponseDTO::class, 'json')
             ->willReturn($expectedDeserializeDto);
@@ -91,16 +96,13 @@ class AnswerClientTest extends TestCase
 
     public function testGetAnswersByQuestionIdWithEmptyList(): void
     {
-        $httpClientMock = $this->createMock(HttpClientInterface::class);
-        $serializerMock = $this->createMock(SerializerInterface::class);
-
-        $answerClient = new AnswerClient($httpClientMock, $serializerMock);
+        $answerClient = new AnswerClient($this->httpClientMock, $this->serializerMock);
 
         $responseContent = '{"items":[],"has_more":false,"quota_max":10000,"quota_remaining":9766}';
 
         $responseMock = $this->createMock(ResponseInterface::class);
         $responseMock->method('getContent')->willReturn($responseContent);
-        $httpClientMock->expects($this->once())
+        $this->httpClientMock->expects($this->once())
             ->method('request')
             ->willReturn($responseMock);
 
@@ -111,7 +113,7 @@ class AnswerClientTest extends TestCase
             quotaRemaining: 9766
         );
 
-        $serializerMock->expects($this->once())
+        $this->serializerMock->expects($this->once())
             ->method('deserialize')
             ->with($responseContent, AnswerByQuestionResponseDTO::class, 'json')
             ->willReturn($expectedDeserializeDto);
@@ -125,13 +127,10 @@ class AnswerClientTest extends TestCase
 
     public function testGetAnswersByQuestionIdWithError(): void
     {
-        $httpClientMock = $this->createMock(HttpClientInterface::class);
-        $serializerMock = $this->createMock(SerializerInterface::class);
-
-        $answerClient = new AnswerClient($httpClientMock, $serializerMock);
+        $answerClient = new AnswerClient($this->httpClientMock, $this->serializerMock);
 
         $exception = $this->createMock(ClientExceptionInterface::class);
-        $httpClientMock
+        $this->httpClientMock
             ->method('request')
             ->willThrowException($exception);
 

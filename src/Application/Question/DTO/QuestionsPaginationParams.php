@@ -22,6 +22,16 @@ class QuestionsPaginationParams
         $this->sort = $sort ?? "activity";
     }
 
+    public function toArray(): array
+    {
+        return [
+            'page' => $this->page,
+            'pagesize' => $this->pagesize,
+            'order' => $this->order,
+            'sort' => $this->sort,
+        ];
+    }
+
     public function getPage(): ?int
     {
         return $this->page;
