@@ -26,7 +26,7 @@ class AnswerClient implements AnswerRepositoryInterface
         try {
             $content = $this->stackExchangeClient->request(
                 method: 'GET',
-                url: "questions/{$questionId}/answers",
+                url: "questions/{$questionId}/answers?pagesize=100",
             )->getContent();
 
             return $this->mapResponse($content);
