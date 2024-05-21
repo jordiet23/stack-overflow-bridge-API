@@ -69,7 +69,7 @@ To execute the tests, follow these steps:
     ```bash
     make test
     ```
-By following these commands, you can verify that all aspects of the application are functioning as expected.
+By following these commands, you can verify that all aspects of the application are working as expected.
 
 
 ## Application Architecture
